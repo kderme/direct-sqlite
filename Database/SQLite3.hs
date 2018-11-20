@@ -406,8 +406,7 @@ prepareUtf8 db sql = do
 
 -- | <https://www.sqlite.org/c3ref/step.html>
 step :: Statement -> IO StepResult
-step statement =
-    Direct.step statement >>= checkError (DetailStatement statement) "step"
+step statement = Direct.step statement >>= checkError (DetailStatement statement) "step"
 
 -- | <https://www.sqlite.org/c3ref/step.html>
 --

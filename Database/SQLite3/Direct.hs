@@ -17,6 +17,7 @@ module Database.SQLite3.Direct (
     setTrace,
     getAutoCommit,
     setSharedCacheEnabled,
+    threadsafe,
 
     -- * Simple query execution
     -- | <https://sqlite.org/c3ref/exec.html>
@@ -425,6 +426,16 @@ getAutoCommit (Database db) =
 setSharedCacheEnabled :: Bool -> IO (Either Error ())
 setSharedCacheEnabled val =
     toResult () <$> c_sqlite3_enable_shared_cache val
+
+-- | <https://www.sqlite.org/c3ref/threadsafe.html>
+--
+-- Returns zero if and only if SQLite was compiled with mutexing
+-- code omitted due to the SQLITE_THREADSAFE compile-time option
+-- being set to 0. The return value of the sqlite3_threadsafe()
+-- function shows only the compile-time setting of thread safety.
+threadsafe :: Database -> IO Int
+threadsafe (Database db) =
+    fromIntegral <$> c_sqlite3_threadsafe db
 
 -- | <https://www.sqlite.org/c3ref/prepare.html>
 --

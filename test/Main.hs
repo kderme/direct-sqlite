@@ -38,6 +38,7 @@ regressionTests :: [TestEnv -> Test]
 regressionTests =
     [ TestLabel "Exec"          . testExec
     , TestLabel "ExecCallback"  . testExecCallback
+    , TestLabel "ThreadSafe"    . testThreadsafe
     , TestLabel "Simple"        . testSimplest
     , TestLabel "Prepare"       . testPrepare
     , TestLabel "CloseBusy"     . testCloseBusy
@@ -198,6 +199,10 @@ testTracing TestEnv{..} = TestCase $
       Direct.Utf8 msg <- readChan chan
       assertEqual "tracing" "empty" msg
 
+testThreadsafe :: TestEnv -> Test
+testThreadsafe TestEnv{..} = TestCase $ do
+  threadSafe <- Direct.threadsafe conn
+  assertEqual "threadSafe" 1 threadSafe
 
 -- Simplest SELECT
 testSimplest :: TestEnv -> Test
